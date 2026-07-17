@@ -1,28 +1,41 @@
-// Last updated: 7/17/2026, 2:50:17 PM
+// Last updated: 7/17/2026, 2:50:56 PM
 1class Solution {
-2    public String addBinary(String a, String b) {
-3        StringBuilder result = new StringBuilder();
-4        int i = a.length() - 1;
-5        int j = b.length() - 1;
-6        int carry = 0;
-7
-8        while (i >= 0 || j >= 0 || carry > 0) {
-9            int sum = carry;
-10
-11            if (i >= 0) {
-12                sum += a.charAt(i) - '0';
-13                i--;
-14            }
-15
-16            if (j >= 0) {
-17                sum += b.charAt(j) - '0';
-18                j--;
-19            }
+2    public int longestValidParentheses(String s) {
+3        int maxLen = 0;
+4        int left = 0;
+5        int right = 0;
+6
+7        for (int i = 0; i < s.length(); i++) {
+8            if (s.charAt(i) == '(') {
+9                left++;
+10            } else {
+11                right++;
+12            }
+13            if (left == right) {
+14                maxLen = Math.max(maxLen, 2 * right);
+15            } else if (right > left) {
+16                left = 0;
+17                right = 0;
+18            }
+19        }
 20
-21            result.append(sum % 2);
-22            carry = sum / 2;
-23        }
-24
-25        return result.reverse().toString();
-26    }
-27}
+21        left = 0;
+22        right = 0;
+23
+24        for (int i = s.length() - 1; i >= 0; i--) {
+25            if (s.charAt(i) == '(') {
+26                left++;
+27            } else {
+28                right++;
+29            }
+30            if (left == right) {
+31                maxLen = Math.max(maxLen, 2 * left);
+32            } else if (left > right) {
+33                left = 0;
+34                right = 0;
+35            }
+36        }
+37
+38        return maxLen;
+39    }
+40}
