@@ -1,27 +1,43 @@
-// Last updated: 7/17/2026, 2:52:36 PM
-1class Solution {
-2    public String shortestPalindrome(String s) {
-3        if (s == null || s.length() <= 1) {
-4            return s;
-5        }
-6
-7        String temp = s + "#" + new StringBuilder(s).reverse().toString();
-8        int[] lps = new int[temp.length()];
+// Last updated: 7/17/2026, 2:53:43 PM
+1import java.util.Stack;
+2
+3class Solution {
+4    public int calculate(String s) {
+5        Stack<Integer> stack = new Stack<>();
+6        int result = 0;
+7        int number = 0;
+8        int sign = 1;
 9
-10        for (int i = 1; i < temp.length(); i++) {
-11            int j = lps[i - 1];
-12            while (j > 0 && temp.charAt(i) != temp.charAt(j)) {
-13                j = lps[j - 1];
-14            }
-15            if (temp.charAt(i) == temp.charAt(j)) {
-16                j++;
-17            }
-18            lps[i] = j;
-19        }
-20
-21        int longestPalindromePrefixLen = lps[temp.length() - 1];
-22        String suffixToAdd = s.substring(longestPalindromePrefixLen);
-23        
-24        return new StringBuilder(suffixToAdd).reverse().toString() + s;
-25    }
-26}
+10        for (int i = 0; i < s.length(); i++) {
+11            char c = s.charAt(i);
+12
+13            if (Character.isDigit(c)) {
+14                number = 10 * number + (c - '0');
+15            } else if (c == '+') {
+16                result += sign * number;
+17                number = 0;
+18                sign = 1;
+19            } else if (c == '-') {
+20                result += sign * number;
+21                number = 0;
+22                sign = -1;
+23            } else if (c == '(') {
+24                stack.push(result);
+25                stack.push(sign);
+26                result = 0;
+27                sign = 1;
+28            } else if (c == ')') {
+29                result += sign * number;
+30                number = 0;
+31                result *= stack.pop();
+32                result += stack.pop();
+33            }
+34        }
+35
+36        if (number != 0) {
+37            result += sign * number;
+38        }
+39
+40        return result;
+41    }
+42}
