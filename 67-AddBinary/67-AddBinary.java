@@ -1,37 +1,27 @@
-// Last updated: 7/17/2026, 2:51:44 PM
+// Last updated: 7/17/2026, 2:52:36 PM
 1class Solution {
-2    public boolean isNumber(String s) {
-3        s = s.trim();
-4        
-5        boolean seenDigit = false;
-6        boolean seenDot = false;
-7        boolean seenE = false;
-8        
-9        for (int i = 0; i < s.length(); i++) {
-10            char ch = s.charAt(i);
-11            
-12            if (Character.isDigit(ch)) {
-13                seenDigit = true;
-14            } else if (ch == '+' || ch == '-') {
-15                if (i > 0 && s.charAt(i - 1) != 'e' && s.charAt(i - 1) != 'E') {
-16                    return false;
-17                }
-18            } else if (ch == 'e' || ch == 'E') {
-19                if (seenE || !seenDigit) {
-20                    return false;
-21                }
-22                seenE = true;
-23                seenDigit = false; 
-24            } else if (ch == '.') {
-25                if (seenDot || seenE) {
-26                    return false;
-27                }
-28                seenDot = true;
-29            } else {
-30                return false;
-31            }
-32        }
-33        
-34        return seenDigit;
-35    }
-36}
+2    public String shortestPalindrome(String s) {
+3        if (s == null || s.length() <= 1) {
+4            return s;
+5        }
+6
+7        String temp = s + "#" + new StringBuilder(s).reverse().toString();
+8        int[] lps = new int[temp.length()];
+9
+10        for (int i = 1; i < temp.length(); i++) {
+11            int j = lps[i - 1];
+12            while (j > 0 && temp.charAt(i) != temp.charAt(j)) {
+13                j = lps[j - 1];
+14            }
+15            if (temp.charAt(i) == temp.charAt(j)) {
+16                j++;
+17            }
+18            lps[i] = j;
+19        }
+20
+21        int longestPalindromePrefixLen = lps[temp.length() - 1];
+22        String suffixToAdd = s.substring(longestPalindromePrefixLen);
+23        
+24        return new StringBuilder(suffixToAdd).reverse().toString() + s;
+25    }
+26}
