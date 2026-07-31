@@ -1,15 +1,17 @@
-// Last updated: 7/31/2026, 9:22:09 AM
+// Last updated: 7/31/2026, 9:23:25 AM
 1class Solution {
-2    public String convertToTitle(int columnNumber) {
-3        StringBuilder result = new StringBuilder();
-4
-5        while (columnNumber > 0) {
-6            columnNumber--; // Adjust for 1-based indexing (0 -> 'A', 25 -> 'Z')
-7            char remainder = (char) ('A' + (columnNumber % 26));
-8            result.append(remainder);
-9            columnNumber /= 26;
-10        }
-11
-12        return result.reverse().toString();
-13    }
-14}
+2    public int majorityElement(int[] nums) {
+3        int candidate = 0;
+4        int count = 0;
+5
+6        for (int num : nums) {
+7            if (count == 0) {
+8                candidate = num;
+9            }
+10            
+11            count += (num == candidate) ? 1 : -1;
+12        }
+13
+14        return candidate;
+15    }
+16}
