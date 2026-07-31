@@ -1,4 +1,4 @@
-// Last updated: 7/31/2026, 9:11:20 AM
+// Last updated: 7/31/2026, 9:16:38 AM
 1/**
 2 * Definition for a binary tree node.
 3 * public class TreeNode {
@@ -15,18 +15,33 @@
 14 * }
 15 */
 16class Solution {
-17    public boolean isSameTree(TreeNode p, TreeNode q) {
-18        // Base case: Both nodes are null -> identical
-19        if (p == null && q == null) {
-20            return true;
-21        }
-22
-23        // Base case: One node is null or values differ -> not identical
-24        if (p == null || q == null || p.val != q.val) {
-25            return false;
-26        }
-27
-28        // Recursively compare left and right subtrees
-29        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
-30    }
-31}
+17    public boolean isBalanced(TreeNode root) {
+18        return checkHeight(root) != -1;
+19    }
+20
+21    private int checkHeight(TreeNode node) {
+22        if (node == null) {
+23            return 0;
+24        }
+25
+26        // Check left subtree
+27        int leftHeight = checkHeight(node.left);
+28        if (leftHeight == -1) {
+29            return -1; // Left subtree is unbalanced
+30        }
+31
+32        // Check right subtree
+33        int rightHeight = checkHeight(node.right);
+34        if (rightHeight == -1) {
+35            return -1; // Right subtree is unbalanced
+36        }
+37
+38        // If height difference between left and right subtrees > 1, unbalanced
+39        if (Math.abs(leftHeight - rightHeight) > 1) {
+40            return -1;
+41        }
+42
+43        // Return actual height of current node
+44        return Math.max(leftHeight, rightHeight) + 1;
+45    }
+46}
