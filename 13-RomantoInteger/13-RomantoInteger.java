@@ -1,30 +1,39 @@
-// Last updated: 8/6/2026, 9:11:18 AM
-1class Solution {
-2    public int romanToInt(String s) {
-3        int res = 0;
-4        for (int i = 0; i < s.length(); i++) {
-5            int current = getValue(s.charAt(i));
-6            
-7            // If the next symbol has a larger value, subtract current value
-8            if (i + 1 < s.length() && current < getValue(s.charAt(i + 1))) {
-9                res -= current;
-10            } else {
-11                res += current;
-12            }
-13        }
-14        return res;
-15    }
+// Last updated: 8/6/2026, 9:13:15 AM
+1/**
+2 * Definition for singly-linked list.
+3 * public class ListNode {
+4 *     int val;
+5 *     ListNode next;
+6 *     ListNode() {}
+7 *     ListNode(int val) { this.val = val; }
+8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+9 * }
+10 */
+11class Solution {
+12    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+13        // Create a dummy node to serve as the start of the merged list
+14        ListNode dummy = new ListNode(-1);
+15        ListNode current = dummy;
 16
-17    private int getValue(char ch) {
-18        switch (ch) {
-19            case 'I': return 1;
-20            case 'V': return 5;
-21            case 'X': return 10;
-22            case 'L': return 50;
-23            case 'C': return 100;
-24            case 'D': return 500;
-25            case 'M': return 1000;
-26            default: return 0;
+17        // Traverse both lists and attach the smaller value
+18        while (list1 != null && list2 != null) {
+19            if (list1.val <= list2.val) {
+20                current.next = list1;
+21                list1 = list1.next;
+22            } else {
+23                current.next = list2;
+24                list2 = list2.next;
+25            }
+26            current = current.next;
 27        }
-28    }
-29}
+28
+29        // Attach remaining nodes if any list is non-empty
+30        if (list1 != null) {
+31            current.next = list1;
+32        } else {
+33            current.next = list2;
+34        }
+35
+36        return dummy.next;
+37    }
+38}
