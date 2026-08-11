@@ -1,34 +1,26 @@
-// Last updated: 8/11/2026, 8:51:51 AM
-1/**
-2 * Definition for singly-linked list.
-3 * public class ListNode {
-4 *     int val;
-5 *     ListNode next;
-6 *     ListNode() {}
-7 *     ListNode(int val) { this.val = val; }
-8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-9 * }
-10 */
-11class Solution {
-12    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-13        ListNode dummyHead = new ListNode(0);
-14        ListNode current = dummyHead;
-15        int carry = 0;
-16
-17        while (l1 != null || l2 != null || carry != 0) {
-18            int val1 = (l1 != null) ? l1.val : 0;
-19            int val2 = (l2 != null) ? l2.val : 0;
-20
-21            int sum = val1 + val2 + carry;
-22            carry = sum / 10;
-23
-24            current.next = new ListNode(sum % 10);
-25            current = current.next;
-26
-27            if (l1 != null) l1 = l1.next;
-28            if (l2 != null) l2 = l2.next;
-29        }
-30
-31        return dummyHead.next;
-32    }
-33}
+// Last updated: 8/11/2026, 8:53:15 AM
+1import java.util.HashMap;
+2
+3class Solution {
+4    public int lengthOfLongestSubstring(String s) {
+5        int maxLength = 0;
+6        int left = 0;
+7        // Map to store the last seen index of each character
+8        HashMap<Character, Integer> charMap = new HashMap<>();
+9
+10        for (int right = 0; right < s.length(); right++) {
+11            char currentChar = s.charAt(right);
+12
+13            // If character is already in the map and within the current window,
+14            // move left pointer right past the previous index of currentChar
+15            if (charMap.containsKey(currentChar)) {
+16                left = Math.max(left, charMap.get(currentChar) + 1);
+17            }
+18
+19            charMap.put(currentChar, right);
+20            maxLength = Math.max(maxLength, right - left + 1);
+21        }
+22
+23        return maxLength;
+24    }
+25}
