@@ -1,26 +1,32 @@
-// Last updated: 8/11/2026, 8:53:15 AM
-1import java.util.HashMap;
-2
-3class Solution {
-4    public int lengthOfLongestSubstring(String s) {
-5        int maxLength = 0;
-6        int left = 0;
-7        // Map to store the last seen index of each character
-8        HashMap<Character, Integer> charMap = new HashMap<>();
-9
-10        for (int right = 0; right < s.length(); right++) {
-11            char currentChar = s.charAt(right);
-12
-13            // If character is already in the map and within the current window,
-14            // move left pointer right past the previous index of currentChar
-15            if (charMap.containsKey(currentChar)) {
-16                left = Math.max(left, charMap.get(currentChar) + 1);
-17            }
-18
-19            charMap.put(currentChar, right);
-20            maxLength = Math.max(maxLength, right - left + 1);
-21        }
-22
-23        return maxLength;
-24    }
-25}
+// Last updated: 8/11/2026, 8:54:12 AM
+1class Solution {
+2    public String longestPalindrome(String s) {
+3        if (s == null || s.length() < 1) return "";
+4        
+5        int start = 0, end = 0;
+6        
+7        for (int i = 0; i < s.length(); i++) {
+8            // Expand around single character center (odd length palindromes)
+9            int len1 = expandAroundCenter(s, i, i);
+10            // Expand around two-character center (even length palindromes)
+11            int len2 = expandAroundCenter(s, i, i + 1);
+12            
+13            int maxLen = Math.max(len1, len2);
+14            
+15            if (maxLen > end - start) {
+16                start = i - (maxLen - 1) / 2;
+17                end = i + maxLen / 2;
+18            }
+19        }
+20        
+21        return s.substring(start, end + 1);
+22    }
+23    
+24    private int expandAroundCenter(String s, int left, int right) {
+25        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+26            left--;
+27            right++;
+28        }
+29        return right - left - 1;
+30    }
+31}
