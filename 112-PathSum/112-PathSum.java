@@ -1,19 +1,28 @@
-// Last updated: 9/1/2026, 9:00:38 AM
-1import java.util.ArrayList;
-2import java.util.List;
-3
-4class Solution {
-5    public List<Integer> postorderTraversal(TreeNode root) {
-6        List<Integer> result = new ArrayList<>();
-7        dfs(root, result);
-8        return result;
-9    }
-10
-11    private void dfs(TreeNode node, List<Integer> result) {
-12        if (node == null) return;
-13
-14        dfs(node.left, result);    // Left
-15        dfs(node.right, result);   // Right
-16        result.add(node.val);      // Root
-17    }
-18}
+// Last updated: 9/1/2026, 9:06:37 AM
+1/**
+2 * Definition for singly-linked list.
+3 * public class ListNode {
+4 *     int val;
+5 *     ListNode next;
+6 *     ListNode(int x) {
+7 *         val = x;
+8 *         next = null;
+9 *     }
+10 * }
+11 */
+12public class Solution {
+13    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+14        if (headA == null || headB == null) return null;
+15
+16        ListNode ptrA = headA;
+17        ListNode ptrB = headB;
+18
+19        while (ptrA != ptrB) {
+20            // Move to next node or switch to the head of the opposite list
+21            ptrA = (ptrA == null) ? headB : ptrA.next;
+22            ptrB = (ptrB == null) ? headA : ptrB.next;
+23        }
+24
+25        return ptrA; // Either the intersection node or null
+26    }
+27}
