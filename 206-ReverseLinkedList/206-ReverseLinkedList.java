@@ -1,28 +1,24 @@
-// Last updated: 9/1/2026, 9:24:52 AM
-1/**
-2 * Definition for singly-linked list.
-3 * public class ListNode {
-4 *     int val;
-5 *     ListNode next;
-6 *     ListNode() {}
-7 *     ListNode(int val) { this.val = val; }
-8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-9 * }
-10 */
-11class Solution {
-12    public ListNode deleteDuplicates(ListNode head) {
-13        ListNode curr = head;
-14
-15        while (curr != null && curr.next != null) {
-16            if (curr.val == curr.next.val) {
-17                // Skip the duplicate node
-18                curr.next = curr.next.next;
-19            } else {
-20                // Move to next distinct node
-21                curr = curr.next;
-22            }
-23        }
-24
-25        return head;
-26    }
-27}
+// Last updated: 9/1/2026, 9:26:11 AM
+1class Solution {
+2    public boolean isHappy(int n) {
+3        int slow = n;
+4        int fast = getNext(n);
+5
+6        while (fast != 1 && slow != fast) {
+7            slow = getNext(slow);
+8            fast = getNext(getNext(fast));
+9        }
+10
+11        return fast == 1;
+12    }
+13
+14    private int getNext(int n) {
+15        int sum = 0;
+16        while (n > 0) {
+17            int digit = n % 10;
+18            sum += digit * digit;
+19            n /= 10;
+20        }
+21        return sum;
+22    }
+23}
