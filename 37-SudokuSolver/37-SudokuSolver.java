@@ -1,4 +1,4 @@
-// Last updated: 9/15/2026, 9:09:38 AM
+// Last updated: 9/15/2026, 9:13:01 AM
 1class Solution {
 2    public void solveSudoku(char[][] board) {
 3        solve(board);
@@ -15,24 +15,24 @@
 14                            if (solve(board)) {
 15                                return true;
 16                            } else {
-17                                board[row][col] = '.'; // Backtrack
+17                                board[row][col] = '.'; 
 18                            }
 19                        }
 20                    }
-21                    return false; // No valid digit found for this cell
+21                    return false; 
 22                }
 23            }
 24        }
-25        return true; // All cells filled successfully
+25        return true;
 26    }
 27
 28    private boolean isValid(char[][] board, int row, int col, char c) {
 29        for (int i = 0; i < 9; i++) {
-30            // Check row
+30          
 31            if (board[row][i] == c) return false;
-32            // Check column
+32         
 33            if (board[i][col] == c) return false;
-34            // Check 3x3 sub-grid
+34         
 35            int subRow = 3 * (row / 3) + i / 3;
 36            int subCol = 3 * (col / 3) + i % 3;
 37            if (board[subRow][subCol] == c) return false;
