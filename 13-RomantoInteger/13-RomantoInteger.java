@@ -1,30 +1,28 @@
-// Last updated: 9/21/2026, 1:32:12 PM
-1class Solution {
-2    public String countAndSay(int n) {
-3        String current = "1";
-4        
-5        for (int i = 2; i <= n; i++) {
-6            StringBuilder next = new StringBuilder();
-7            int len = current.length();
-8            
-9            int j = 0;
-10            while (j < len) {
-11                char ch = current.charAt(j);
-12                int count = 0;
-13                
-14                // Count consecutive identical characters
-15                while (j < len && current.charAt(j) == ch) {
-16                    count++;
-17                    j++;
-18                }
-19                
-20                // Append frequency followed by the character
-21                next.append(count).append(ch);
-22            }
-23            
-24            current = next.toString();
-25        }
-26        
-27        return current;
-28    }
-29}
+// Last updated: 9/21/2026, 1:33:05 PM
+1import java.util.ArrayList;
+2import java.util.Arrays;
+3import java.util.HashMap;
+4import java.util.List;
+5import java.util.Map;
+6
+7class Solution {
+8    public List<List<String>> groupAnagrams(String[] strs) {
+9        if (strs == null || strs.length == 0) {
+10            return new ArrayList<>();
+11        }
+12
+13        Map<String, List<String>> map = new HashMap<>();
+14
+15        for (String s : strs) {
+16            // Sort the characters of each string to use as the map key
+17            char[] chars = s.toCharArray();
+18            Arrays.sort(chars);
+19            String key = String.valueOf(chars);
+20
+21            map.putIfAbsent(key, new ArrayList<>());
+22            map.get(key).add(s);
+23        }
+24
+25        return new ArrayList<>(map.values());
+26    }
+27}
