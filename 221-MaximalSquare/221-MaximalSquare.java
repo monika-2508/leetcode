@@ -1,46 +1,36 @@
-// Last updated: 9/21/2026, 1:18:20 PM
-1import java.util.ArrayList;
-2import java.util.List;
+// Last updated: 9/21/2026, 1:21:28 PM
+1import java.util.ArrayDeque;
+2import java.util.Deque;
 3
 4class Solution {
-5    public List<Integer> majorityElement(int[] nums) {
-6        List<Integer> result = new ArrayList<>();
-7        if (nums == null || nums.length == 0) return result;
-8
-9        // There can be at most two elements that appear more than n / 3 times.
-10        Integer candidate1 = null, candidate2 = null;
-11        int count1 = 0, count2 = 0;
+5    public int[] maxSlidingWindow(int[] nums, int k) {
+6        if (nums == null || k <= 0) return new int[0];
+7        
+8        int n = nums.length;
+9        int[] result = new int[n - k + 1];
+10        // Deque stores indices; elements in deque maintain monotonically decreasing order
+11        Deque<Integer> deque = new ArrayDeque<>();
 12
-13        // 1st Pass: Find the two potential candidates
-14        for (int num : nums) {
-15            if (candidate1 != null && num == candidate1) {
-16                count1++;
-17            } else if (candidate2 != null && num == candidate2) {
-18                count2++;
-19            } else if (count1 == 0) {
-20                candidate1 = num;
-21                count1 = 1;
-22            } else if (count2 == 0) {
-23                candidate2 = num;
-24                count2 = 1;
-25            } else {
-26                count1--;
-27                count2--;
-28            }
-29        }
-30
-31        // 2nd Pass: Verify if the candidates actually appear > n / 3 times
-32        count1 = 0;
-33        count2 = 0;
-34        for (int num : nums) {
-35            if (candidate1 != null && num == candidate1) count1++;
-36            if (candidate2 != null && num == candidate2) count2++;
-37        }
-38
-39        int threshold = nums.length / 3;
-40        if (count1 > threshold) result.add(candidate1);
-41        if (count2 > threshold) result.add(candidate2);
-42
-43        return result;
-44    }
-45}
+13        for (int i = 0; i < n; i++) {
+14            // 1. Remove indices that are outside the current window [i - k + 1, i]
+15            while (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+16                deque.pollFirst();
+17            }
+18
+19            // 2. Maintain decreasing order: remove smaller elements from the back
+20            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+21                deque.pollLast();
+22            }
+23
+24            // 3. Add current element index to the back
+25            deque.offerLast(i);
+26
+27            // 4. The front of deque is the maximum of the current window
+28            if (i >= k - 1) {
+29                result[i - k + 1] = nums[deque.peekFirst()];
+30            }
+31        }
+32
+33        return result;
+34    }
+35}
