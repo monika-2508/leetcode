@@ -1,39 +1,42 @@
-// Last updated: 8/6/2026, 9:13:22 AM
-1/**
-2 * Definition for singly-linked list.
-3 * public class ListNode {
-4 *     int val;
-5 *     ListNode next;
-6 *     ListNode() {}
-7 *     ListNode(int val) { this.val = val; }
-8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-9 * }
-10 */
-11class Solution {
-12    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-13        // Create a dummy node to serve as the start of the merged list
-14        ListNode dummy = new ListNode(-1);
-15        ListNode current = dummy;
-16
-17        // Traverse both lists and attach the smaller value
-18        while (list1 != null && list2 != null) {
-19            if (list1.val <= list2.val) {
-20                current.next = list1;
-21                list1 = list1.next;
-22            } else {
-23                current.next = list2;
-24                list2 = list2.next;
-25            }
-26            current = current.next;
-27        }
-28
-29        // Attach remaining nodes if any list is non-empty
-30        if (list1 != null) {
-31            current.next = list1;
-32        } else {
-33            current.next = list2;
-34        }
-35
-36        return dummy.next;
-37    }
-38}
+// Last updated: 9/21/2026, 1:29:38 PM
+1import java.util.ArrayList;
+2import java.util.List;
+3
+4class Solution {
+5    private static final String[] KEYPAD = {
+6        "",     // 0
+7        "",     // 1
+8        "abc",  // 2
+9        "def",  // 3
+10        "ghi",  // 4
+11        "jkl",  // 5
+12        "mno",  // 6
+13        "pqrs", // 7
+14        "tuv",  // 8
+15        "wxyz"  // 9
+16    };
+17
+18    public List<String> letterCombinations(String digits) {
+19        List<String> result = new ArrayList<>();
+20        if (digits == null || digits.isEmpty()) {
+21            return result;
+22        }
+23
+24        backtrack(digits, 0, new StringBuilder(), result);
+25        return result;
+26    }
+27
+28    private void backtrack(String digits, int index, StringBuilder current, List<String> result) {
+29        if (index == digits.length()) {
+30            result.add(current.toString());
+31            return;
+32        }
+33
+34        String letters = KEYPAD[digits.charAt(index) - '0'];
+35        for (int i = 0; i < letters.length(); i++) {
+36            current.append(letters.charAt(i));
+37            backtrack(digits, index + 1, current, result);
+38            current.deleteCharAt(current.length() - 1); // Backtrack
+39        }
+40    }
+41}
