@@ -1,22 +1,28 @@
-// Last updated: 9/21/2026, 1:10:16 PM
-1class Solution {
-2    public int maximalSquare(char[][] matrix) {
-3        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
-4
-5        int m = matrix.length;
-6        int n = matrix[0].length;
-7        int[][] dp = new int[m + 1][n + 1];
-8        int maxSide = 0;
-9
-10        for (int i = 1; i <= m; i++) {
-11            for (int j = 1; j <= n; j++) {
-12                if (matrix[i - 1][j - 1] == '1') {
-13                    dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
-14                    maxSide = Math.max(maxSide, dp[i][j]);
-15                }
-16            }
-17        }
-18
-19        return maxSide * maxSide;
-20    }
-21}
+// Last updated: 9/21/2026, 1:16:57 PM
+1import java.util.ArrayList;
+2import java.util.List;
+3
+4class Solution {
+5    public List<String> summaryRanges(int[] nums) {
+6        List<String> result = new ArrayList<>();
+7        int n = nums.length;
+8        
+9        for (int i = 0; i < n; i++) {
+10            int start = nums[i];
+11            
+12            // Advance while consecutive numbers form a continuous range
+13            while (i + 1 < n && nums[i + 1] == nums[i] + 1) {
+14                i++;
+15            }
+16            
+17            // Format range: either "a->b" or "a"
+18            if (start != nums[i]) {
+19                result.add(start + "->" + nums[i]);
+20            } else {
+21                result.add(String.valueOf(start));
+22            }
+23        }
+24        
+25        return result;
+26    }
+27}
