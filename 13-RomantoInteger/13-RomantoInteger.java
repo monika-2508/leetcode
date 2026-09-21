@@ -1,42 +1,38 @@
-// Last updated: 9/21/2026, 1:29:38 PM
-1import java.util.ArrayList;
-2import java.util.List;
-3
-4class Solution {
-5    private static final String[] KEYPAD = {
-6        "",     // 0
-7        "",     // 1
-8        "abc",  // 2
-9        "def",  // 3
-10        "ghi",  // 4
-11        "jkl",  // 5
-12        "mno",  // 6
-13        "pqrs", // 7
-14        "tuv",  // 8
-15        "wxyz"  // 9
-16    };
+// Last updated: 9/21/2026, 1:31:23 PM
+1class Solution {
+2    public String multiply(String num1, String num2) {
+3        if ("0".equals(num1) || "0".equals(num2)) {
+4            return "0";
+5        }
+6
+7        int m = num1.length();
+8        int n = num2.length();
+9        int[] pos = new int[m + n];
+10
+11        // Multiply digits from right to left
+12        for (int i = m - 1; i >= 0; i--) {
+13            int d1 = num1.charAt(i) - '0';
+14            for (int j = n - 1; j >= 0; j--) {
+15                int d2 = num2.charAt(j) - '0';
+16                int mul = d1 * d2;
 17
-18    public List<String> letterCombinations(String digits) {
-19        List<String> result = new ArrayList<>();
-20        if (digits == null || digits.isEmpty()) {
-21            return result;
-22        }
-23
-24        backtrack(digits, 0, new StringBuilder(), result);
-25        return result;
-26    }
-27
-28    private void backtrack(String digits, int index, StringBuilder current, List<String> result) {
-29        if (index == digits.length()) {
-30            result.add(current.toString());
-31            return;
-32        }
-33
-34        String letters = KEYPAD[digits.charAt(index) - '0'];
-35        for (int i = 0; i < letters.length(); i++) {
-36            current.append(letters.charAt(i));
-37            backtrack(digits, index + 1, current, result);
-38            current.deleteCharAt(current.length() - 1); // Backtrack
-39        }
-40    }
-41}
+18                int p1 = i + j;
+19                int p2 = i + j + 1;
+20                int sum = mul + pos[p2];
+21
+22                pos[p2] = sum % 10;
+23                pos[p1] += sum / 10;
+24            }
+25        }
+26
+27        // Build string, omitting leading zeros
+28        StringBuilder sb = new StringBuilder();
+29        for (int p : pos) {
+30            if (!(sb.length() == 0 && p == 0)) {
+31                sb.append(p);
+32            }
+33        }
+34
+35        return sb.length() == 0 ? "0" : sb.toString();
+36    }
+37}
